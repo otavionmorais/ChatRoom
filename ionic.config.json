@@ -1,0 +1,7 @@
+{
+  "name": "ChatRoom",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
