@@ -24,6 +24,23 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import { Plugins } from "@capacitor/core";
+import { FCM } from "capacitor-fcm";
+import { criarUsuario } from './firebaseConfig';
+const { PushNotifications } = Plugins;
+
+const fcm = new FCM();
+
+PushNotifications.register().then(()=>{
+  fcm.subscribeTo({ topic: "teste" });
+});
+
+criarUsuario({
+  nome: 'otavio',
+  email:'otavio.n.morais@hotmail.com',
+  password: '123456'
+});
+
 const App: React.FC = () => {
 
   return (

@@ -22,3 +22,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#apikeys
+/src/apiKey.js
+/android/app/google-services.json
+
