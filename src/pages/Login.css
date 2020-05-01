@@ -1,0 +1,43 @@
+#login-container {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    margin-left: 5%;
+    margin-top: 5%;
+    width: 90%;
+    height: 90%;
+    text-align: center;
+}
+
+#login-campos-container{
+    margin-top:auto;
+    margin-bottom:auto;
+}
+
+#logo-login {
+    margin:auto;
+    margin-bottom:20px;
+}
+
+#descricao-login{
+    width: 70%;
+    align-self: center;
+    margin-bottom: 20px;
+}
+
+.input-login {
+    margin-bottom: 20px;
+}
+
+#botao-login{
+    width:100%;
+}
+
+#cadastro-login-container {
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    
+}

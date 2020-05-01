@@ -1,0 +1,29 @@
+#cadastro-container {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    margin-left: 5%;
+    margin-top: 5%;
+    width: 90%;
+    height: 90%;
+}
+
+#cadastro-campos-container {
+   
+}
+
+.input-cadastro {
+    margin-bottom: 20px;
+}
+
+#logo-cadastro{
+    margin:auto;
+    width: 200px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+#titulo-cadastro{
+    margin:auto;
+    font-size: 18pt;
+}

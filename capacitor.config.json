@@ -4,5 +4,11 @@
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
-  "cordova": {}
+  "cordova": {},
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000
+    }
+  }
 }
+

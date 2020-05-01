@@ -27,30 +27,33 @@ import './theme/variables.css';
 import { Plugins } from "@capacitor/core";
 import { FCM } from "capacitor-fcm";
 import { criarUsuario } from './firebaseConfig';
-const { PushNotifications } = Plugins;
+import Login from './pages/Login';
+import Cadastro from './pages/Cadastro';
+const { PushNotifications, SplashScreen } = Plugins;
 
 const fcm = new FCM();
 
 PushNotifications.register().then(()=>{
   fcm.subscribeTo({ topic: "teste" });
 });
-
+/*
 criarUsuario({
   nome: 'otavio',
   email:'otavio.n.morais@hotmail.com',
   password: '123456'
-});
-
+}); */
+// <Menu />
 const App: React.FC = () => {
 
   return (
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
-          <Menu />
+         
           <IonRouterOutlet id="main">
-            <Route path="/page/:name" component={Page} exact />
-            <Redirect from="/" to="/page/Inbox" exact />
+            <Route path="/login" component={Login} exact />
+            <Route path="/cadastro" component={Cadastro} exact />
+            <Redirect from="/" to="/login" exact />
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
