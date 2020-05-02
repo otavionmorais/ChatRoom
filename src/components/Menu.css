@@ -1,6 +1,16 @@
+#fechar-menu{
+  position: absolute;
+  right:0;
+  top:0;
+  font-size: 24pt;
+  z-index: 99;
+}
+
 ion-menu ion-content {
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
+  pointer-events:all!important;
 }
+
 
 ion-menu.md ion-content {
   --padding-start: 8px;

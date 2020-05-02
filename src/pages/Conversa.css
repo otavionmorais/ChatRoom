@@ -1,0 +1,37 @@
+#input-conversa-container{
+    display: flex;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width:96%;
+    margin-left: 2%;
+}
+
+#input-conversa {
+    width:100%;
+    height:50px;
+    --highlight-color-focused: none;
+    border-radius: 10px 0px 0px 10px;
+}
+
+#bar-conversa{
+    display: flex;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+#botao-enviar-conversa{
+    margin:0;
+    height:50px;
+    --border-top-left-radius: 0px;
+    --border-top-right-radius: 10px;
+    --border-bottom-left-radius: 0px;
+    --border-bottom-right-radius: 10px;
+    --border-radius: 
+    var(--border-top-left-radius) 
+    var(--border-top-right-radius) 
+    var(--border-bottom-right-radius)
+    var(--border-bottom-left-radius);
+}

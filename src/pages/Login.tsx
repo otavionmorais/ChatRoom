@@ -1,9 +1,8 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonProgressBar, IonPage, IonItem, IonLabel, IonTitle, IonToolbar, IonInput, IonButton } from '@ionic/react';
+import {IonContent,  IonProgressBar, IonPage, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
 import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router';
-import ExploreContainer from '../components/ExploreContainer';
+import {  useHistory } from 'react-router';
 import './Login.css';
-import { efetuarLogin } from '../firebaseConfig';
+import {login, createRoom, addUserToRoom } from '../firebaseConfig';
 import { presentToast } from '../toast';
 import Logo from '../images/crlogolight.png';
 
@@ -15,22 +14,28 @@ const Login: React.FC = () => {
   const [senha, setSenha] = useState('');
   const [mostrarLoading, setMostrarLoading] = useState(false);
 
+  
   const logar = async() => {
     setMostrarLoading(true);
-    const user = await efetuarLogin(email, senha);
+    const user = await login(email, senha);
     if(user){
-        presentToast('Logou');
+        await createRoom('chatroom', user);
+        history.replace('/rooms', {user});
+        
     } else {
         presentToast('Dados incorretos.')
     }
     setMostrarLoading(false);
   }
 
+ 
+
   return (
     <IonPage>
+      
       <IonContent color="dark">
         <div id="login-container">
-
+            
             <img id="logo-login" width="200px" height="100px" src={Logo}/>
             <span id="descricao-login">Converse o que quiser, quando quiser. 💬 </span>
 

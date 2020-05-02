@@ -8,90 +8,54 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
+  IonPage,
 } from '@ionic/react';
 
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { useLocation, useHistory } from 'react-router-dom';
+import { closeOutline, logoAmazon, logOutOutline } from 'ionicons/icons';
 import './Menu.css';
+import { menuController } from "@ionic/core";
 
-interface AppPage {
-  url: string;
-  iosIcon: string;
-  mdIcon: string;
-  title: string;
-}
 
-const appPages: AppPage[] = [
-  {
-    title: 'Inbox',
-    url: '/page/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
-  },
-  {
-    title: 'Outbox',
-    url: '/page/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
-  },
-  {
-    title: 'Favorites',
-    url: '/page/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
-  },
-  {
-    title: 'Archived',
-    url: '/page/Archived',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp
-  },
-  {
-    title: 'Trash',
-    url: '/page/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp
-  },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
-  }
-];
-
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
 const Menu: React.FC = () => {
-  const location = useLocation();
+  const location:any = useLocation();
+  const user = location.state?.user;
+  const history = useHistory();
+
+  if(!user)
+    return (<IonPage></IonPage>)
 
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
+     
+        <div id="fechar-menu" onClick={async()=>{menuController.close()}}>
+          <IonIcon icon={closeOutline} color="dark"/>
+        </div>
+        
+        
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
-          {appPages.map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon slot="start" icon={appPage.iosIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
+          <IonListHeader>{user.name}</IonListHeader>
+          <IonNote>{user.email}</IonNote>
+         
+                <IonItem lines="none">
+                  <IonIcon slot="start" icon={logoAmazon} />
+                  <IonLabel>oi</IonLabel>
                 </IonItem>
-              </IonMenuToggle>
-            );
-          })}
+            
         </IonList>
 
         <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
+            <IonItem  onClick={ async()=>{
+              await menuController.close();
+              delete location.state.user;
+              history.push('/login');
+            }} lines="none">
+              <IonIcon slot="start" icon={logOutOutline} />
+              <IonLabel>Sair</IonLabel>
             </IonItem>
-          ))}
         </IonList>
       </IonContent>
     </IonMenu>

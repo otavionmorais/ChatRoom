@@ -1,10 +1,9 @@
-import { IonButtons, IonIcon, IonContent, IonHeader,IonProgressBar, IonMenuButton, IonPage, IonItem, IonLabel, IonTitle, IonToolbar, IonInput, IonButton } from '@ionic/react';
+import { IonIcon, IonContent, IonProgressBar, IonPage, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
 import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router';
-import ExploreContainer from '../components/ExploreContainer';
+import { useHistory } from 'react-router';
 import './Cadastro.css';
 import { presentToast } from '../toast';
-import { criarUsuario } from '../firebaseConfig';
+import { createUser } from '../firebaseConfig';
 import { arrowBack } from 'ionicons/icons';
 import Logo from '../images/crlogolight.png'
 
@@ -22,7 +21,7 @@ const Cadastro: React.FC = () => {
         if(nome.length>3 && senha.length>5 && senhaConfirmacao===senha
             && (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email))){
 
-            const success = await criarUsuario({nome, email, password:senha});
+            const success = await createUser({name:nome, email, password:senha});
             if(success){
                 presentToast('Cadastro efetuado!');
                 history.replace('/login');
