@@ -6,14 +6,10 @@ import { presentToast } from '../toast';
 
 import Menu from '../components/Menu';
 import Chat from '../components/Chat';
-import { updateUserMessages } from '../firebaseConfig';
-
-
 
 const Rooms: React.FC = () => {
 
   const history = useHistory();
-  const [messages, setMessages] = useState([]);
   const location:any = useLocation();
   const user = location.state?.user;
 

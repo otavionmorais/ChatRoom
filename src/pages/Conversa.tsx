@@ -2,11 +2,7 @@ import {IonContent,  IonProgressBar, IonHeader, IonToolbar, IonButtons, IonPage,
 import React, { useState } from 'react';
 import {  useHistory, useLocation } from 'react-router';
 import './Conversa.css';
-import {login, createRoom, addUserToRoom, updateMessages, findRoomByName } from '../firebaseConfig';
-import { presentToast } from '../toast';
-import Logo from '../images/crlogolight.png';
-
-import {database} from '../firebaseConfig';
+import {updateMessages } from '../firebaseConfig';
 
 
 const Conversa: React.FC = () => {
@@ -15,24 +11,10 @@ const Conversa: React.FC = () => {
   const location:any = useLocation(); 
   const room = location.state.room;
 
-  const [update, setUpdate] = useState(false);
   const [messages, setMessages] = useState([]);
-  //setUpdate(false);
-/*
-  findRoomByName(room).then(result=>{
-    database.ref('rooms/'+result.key+'/messages').on('value', (result)=>{
-      if(JSON.stringify(messages)!==JSON.stringify(result.val())){
-        setMessages(result.val());
-        console.log(messages);
-      }
-    });
-  });
-  */
+ 
   updateMessages(room, messages, setMessages);
 
-  console.log('renderizou');
-  
-  
   return (
     <IonPage>
       <IonHeader>

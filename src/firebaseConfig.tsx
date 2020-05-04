@@ -5,7 +5,7 @@ import { isArray } from 'util';
 
 firebase.initializeApp(config);
 
-export const database = firebase.database();
+const database = firebase.database();
 const auth = firebase.auth();
 
 interface userInfo {
@@ -83,23 +83,6 @@ export const createRoom = async(name:string, user:any) =>{
         await addUserToRoom(user.email, name);
         return false;
     }
-}
-
-export const updateUserMessages = async (user:any, state:any, setState:Function) => {
-    const databaseUser = await findUserByEmail(user.email);
-
-    databaseUser.rooms.map(async (room:any, index:number)=>{
-        const {key:roomKey} = await findRoomByName(room);
-        //console.log(roomKey);
-        database.ref('rooms/'+roomKey+'/messages').on('value', function(snapshot) {
-           if(isArray(snapshot.val())){
-                setState([...state, snapshot.val()[snapshot.val().length-1]]);
-                console.log('mudou');
-           }
-            
-        });
-
-    });
 }
 
 export const updateMessages = async (room:string, messages:any, setMessages:Function)=>{
