@@ -6,18 +6,21 @@ import { presentToast } from '../toast';
 
 import Menu from '../components/Menu';
 import Chat from '../components/Chat';
+import { updateUserMessages } from '../firebaseConfig';
+
 
 
 const Rooms: React.FC = () => {
 
   const history = useHistory();
-
+  const [messages, setMessages] = useState([]);
   const location:any = useLocation();
   const user = location.state?.user;
 
-  console.log(user);
+ // console.log(user);
   if(!user)
     return (<IonPage>Usuário inválido.</IonPage>);
+
 
   return (
     <IonPage>
@@ -35,7 +38,7 @@ const Rooms: React.FC = () => {
         <Menu/>
         <div id="rooms-container">
           {user.rooms? user.rooms.map((room:any, index:number)=>{
-            return <Chat children={{room}}/>
+            return <Chat key={index} children={{room}}/>
           }):''}
           
         </div>

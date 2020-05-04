@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     setMostrarLoading(true);
     const user = await login(email, senha);
     if(user){
-        await createRoom('chatroom', user);
+        
         history.replace('/rooms', {user});
         
     } else {

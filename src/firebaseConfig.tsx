@@ -1,10 +1,11 @@
 import firebase from 'firebase';
 import { presentToast } from './toast';
 import {config} from './apiKey';
+import { isArray } from 'util';
 
 firebase.initializeApp(config);
 
-const database = firebase.database();
+export const database = firebase.database();
 const auth = firebase.auth();
 
 interface userInfo {
@@ -84,24 +85,33 @@ export const createRoom = async(name:string, user:any) =>{
     }
 }
 
-const updateUserMessages = async (user:any, state:any, setState:Function) => {
+export const updateUserMessages = async (user:any, state:any, setState:Function) => {
     const databaseUser = await findUserByEmail(user.email);
 
     databaseUser.rooms.map(async (room:any, index:number)=>{
-        const {key:roomKey} = await findRoomByName(room.name);
+        const {key:roomKey} = await findRoomByName(room);
+        //console.log(roomKey);
         database.ref('rooms/'+roomKey+'/messages').on('value', function(snapshot) {
-            setState([...state, snapshot.val().content]);
+           if(isArray(snapshot.val())){
+                setState([...state, snapshot.val()[snapshot.val().length-1]]);
+                console.log('mudou');
+           }
+            
         });
 
     });
-    
 }
 
-export const updateUserRooms = async (user:any, state:any, setState:Function) => {
-    const {key:userKey} = await findUserByEmail(user.email);
-    database.ref('users/'+userKey+'/rooms').on('value', function(snapshot) {
-        updateUserMessages(user, state, setState);
-    });
+export const updateMessages = async (room:string, messages:any, setMessages:Function)=>{
+
+    const {key:roomKey} = await findRoomByName(room);
+    //database.ref('rooms/'+roomKey+'/messages').off();
+    database.ref('rooms/'+roomKey+'/messages').on('value', function(result) {
+        if(JSON.stringify(messages)!==JSON.stringify(result.val())){
+             setMessages(result.val());
+            //console.log('mudou');
+        }
+     });
 }
 
 export const createUser = async (info:userInfo) =>{
