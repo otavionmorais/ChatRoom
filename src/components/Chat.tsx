@@ -12,7 +12,7 @@ import {
     const history=useHistory();
     
     return (
-    <div id="chat-container" onClick={()=>history.push('/conversa', {room: props.children.room})}>
+    <div id="chat-container" onClick={()=>history.push('/conversa', {user: props.children.user, room: props.children.room})}>
         <span id="chat-title">{props.children.room}</span>
         <IonIcon icon={enterOutline} size="large"/>
     </div>

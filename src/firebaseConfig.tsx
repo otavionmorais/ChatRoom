@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import { presentToast } from './toast';
 import {config} from './apiKey';
-import { isArray } from 'util';
+import moment from 'moment';
 
 firebase.initializeApp(config);
 
@@ -116,4 +116,29 @@ export const login = async(email:string, password:string) => {
         return null;
     }
 }
+
+const getMessagesCount = async (roomKey:string) =>{
+    let size=0;
+    await database.ref('/rooms/'+roomKey+'/messages').once('value', (result)=>{
+        size = result.val().length;
+    });
+    return size;
+}
+
+export const sendMessage = async (room:string, content:string, user:any) =>{
+    try{
+        const {key:roomKey} = await findRoomByName(room);
+        const position = await getMessagesCount(roomKey);
+        await database.ref('/rooms/'+roomKey+'/messages/'+position).set({
+            username: user.name,
+            email: user.email,
+            content,
+            timestamp: moment().unix()
+        });
+    } catch(error){
+
+    }
+}
+
+sendMessage('chatroom', '', '');
 

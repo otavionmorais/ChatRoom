@@ -34,7 +34,7 @@ const Rooms: React.FC = () => {
         <Menu/>
         <div id="rooms-container">
           {user.rooms? user.rooms.map((room:any, index:number)=>{
-            return <Chat key={index} children={{room}}/>
+            return <Chat key={index} children={{room, user}}/>
           }):''}
           
         </div>
