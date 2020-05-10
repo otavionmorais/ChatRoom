@@ -2,7 +2,7 @@ import {IonContent,  IonProgressBar, IonHeader, IonToolbar, IonButtons, IonPage,
 import React, { useState } from 'react';
 import {  useHistory, useLocation } from 'react-router';
 import './Conversa.css';
-import {updateMessages } from '../firebaseConfig';
+import {updateMessages, sendMessage } from '../firebaseConfig';
 import Message from '../components/Message'
 
 
@@ -17,8 +17,9 @@ const Conversa: React.FC = () => {
   
   updateMessages(room, messages, setMessages);
 
-  const enviarMensagem = () => {
-    
+  const enviarMensagem = async () => {
+    await sendMessage(room, digitado, user);
+    setDigitado("");
   }
 
   //padrao msgs
@@ -48,7 +49,7 @@ const Conversa: React.FC = () => {
         <div id="input-conversa-container">
             <IonItem color="light" id="input-conversa">
                
-                <IonInput type="text" placeholder="Digite aqui..." ></IonInput>
+                <IonInput type="text" value={digitado} placeholder="Digite aqui..." onIonChange={(e:any) => setDigitado(e.target.value)} ></IonInput>
             </IonItem>
             <IonButton id="botao-enviar-conversa" onClick={enviarMensagem}>Enviar</IonButton>
             

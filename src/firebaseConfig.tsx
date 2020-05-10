@@ -139,6 +139,3 @@ export const sendMessage = async (room:string, content:string, user:any) =>{
 
     }
 }
-
-sendMessage('chatroom', '', '');
-
