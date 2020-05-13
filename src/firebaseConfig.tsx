@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import { presentToast } from './toast';
 import {config} from './apiKey';
 import moment from 'moment';
+import axios from 'axios';
 
 firebase.initializeApp(config);
 
@@ -88,7 +89,7 @@ export const createRoom = async(name:string, user:any) =>{
 export const updateMessages = async (room:string, messages:any, setMessages:Function)=>{
 
     const {key:roomKey} = await findRoomByName(room);
-    //database.ref('rooms/'+roomKey+'/messages').off();
+    database.ref('rooms/'+roomKey+'/messages').off();
     database.ref('rooms/'+roomKey+'/messages').on('value', function(result) {
         if(JSON.stringify(messages)!==JSON.stringify(result.val())){
              setMessages(result.val());
@@ -120,7 +121,10 @@ export const login = async(email:string, password:string) => {
 const getMessagesCount = async (roomKey:string) =>{
     let size=0;
     await database.ref('/rooms/'+roomKey+'/messages').once('value', (result)=>{
-        size = result.val().length;
+        if(result.val()){
+            const obj = Object.values(result.val());
+            size=obj.length;
+        } 
     });
     return size;
 }
@@ -129,13 +133,17 @@ export const sendMessage = async (room:string, content:string, user:any) =>{
     try{
         const {key:roomKey} = await findRoomByName(room);
         const position = await getMessagesCount(roomKey);
+        const {data} = await axios.get('http://worldtimeapi.org/api/timezone/America/Sao_Paulo');
+        const time = data.datetime;
         await database.ref('/rooms/'+roomKey+'/messages/'+position).set({
             username: user.name,
             email: user.email,
             content,
-            timestamp: moment().unix()
+            timestamp: moment(time).format()
         });
     } catch(error){
 
     }
 }
+
+

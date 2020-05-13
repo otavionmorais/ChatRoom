@@ -1,11 +1,3 @@
-#input-conversa-container{
-    display: flex;
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    width:96%;
-    margin-left: 2%;
-}
 
 #input-conversa {
     width:100%;
@@ -22,7 +14,35 @@
     justify-content: center;
 }
 
+#campos-conversa {
+    position: absolute;
+    bottom:0;
+    left:0;
+    width:96%;
+    display:flex;
+    margin:2%;
+
+}
+
+#conversa-container{
+    display:flex;
+    flex-flow:column;
+    height: calc(100% - 70px);
+    overflow: scroll;
+}
+
+#botao-enviar-content{
+    display:flex;
+    flex-flow: column;
+}
+
+#progress-bar-conversa{
+    background-color: white
+}
+
 #botao-enviar-conversa{
+    display:flex !important;
+    flex-flow: column;
     margin:0;
     height:50px;
     --border-top-left-radius: 0px;
