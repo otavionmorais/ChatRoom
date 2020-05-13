@@ -122,7 +122,7 @@ export const login = async(email:string, password:string) => {
 export const sendMessage = async (room:string, content:string, user:any) =>{
     try{
         const {key:roomKey} = await findRoomByName(room);
-        const {data} = await axios.get('http://worldtimeapi.org/api/timezone/America/Sao_Paulo');
+        const {data} = await axios.get('https://worldtimeapi.org/api/timezone/America/Sao_Paulo');
         const time = data.datetime;
         await database.ref('/rooms/'+roomKey+'/messages/').push({
             username: user.name,
