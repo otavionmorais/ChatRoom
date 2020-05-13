@@ -128,7 +128,7 @@ export const sendMessage = async (room:string, content:string, user:any) =>{
             username: user.name,
             email: user.email,
             content,
-            timestamp: moment(time).format()
+            timestamp: moment(time).valueOf()
         });
     } catch(error){
         console.log(error)

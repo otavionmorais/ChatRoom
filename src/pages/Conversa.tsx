@@ -16,13 +16,25 @@ const Conversa: React.FC = () => {
   const [messages, setMessages]:any = useState(null);
   const [digitado, setDigitado] = useState("");
   const [mostrarLoading, setMostrarLoading] = useState(false);
-  const container:any = document.getElementById('conversa-container');
+  //const [needToScroll, setNeedToScroll] = useState(true);
   const botaoEnviar:any = document.getElementById('botao-enviar-conversa');
-  
-  updateMessages(room, messages, setMessages);
 
-  if(container){
-    container.scrollTop = container.scrollHeight;
+  const scroll = () => {
+    const container:any = document.getElementById('conversa-container');
+    if(container){
+      container.scrollTop = container.scrollHeight;
+    }
+  }
+
+  const setMessagesAndScroll = (messages:any) => {
+    setMessages(messages);
+    scroll();
+  }
+
+  updateMessages(room, messages, setMessagesAndScroll);
+
+  window.onresize = () =>{
+    scroll();
   }
 
   const enviarMensagem = async () => {
@@ -45,7 +57,7 @@ const Conversa: React.FC = () => {
       timestamp:
     }
   */
-  
+   
   return (
     <IonPage>
       <IonHeader>
@@ -62,7 +74,7 @@ const Conversa: React.FC = () => {
           { messages? Object.keys(messages).map((message:any, index:number)=>{
               let myMessage = (messages[message].email===user.email);
               return <Message key={index} children={{key:index, message: messages[message], myMessage}}/>;
-          }):<IonAlert isOpen={true} header={'Carregando mensagens...'}/>}
+          }) :<IonAlert isOpen={true} header={'Carregando mensagens...'}/>}
         </div>
         <div id="campos-conversa">
           <IonItem color="light" id="input-conversa">
