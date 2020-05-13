@@ -7,9 +7,7 @@
   const Message: React.FC = (props:any) => {
     
     const key = props.children.key;
-    const currentUserEmail = props.children.user.email;
     const username = props.children.message.username;
-    const email = props.children.message.email;
     const content =  props.children.message.content;
     const timestamp = props.children.message.timestamp;
     const date = moment(timestamp).format("DD-MM-YYYY HH:mm");
@@ -22,7 +20,6 @@
                 <span id={"message-content"+key} className="message-content">{content}</span>
                 <span id={"message-timestamp"+key} className="message-timestamp">{date}</span>
             </div>
-            <div className="triangle-right"></div>
         </div>
         
     );

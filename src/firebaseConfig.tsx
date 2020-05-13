@@ -90,10 +90,11 @@ export const updateMessages = async (room:string, messages:any, setMessages:Func
 
     const {key:roomKey} = await findRoomByName(room);
     database.ref('rooms/'+roomKey+'/messages').off();
-    database.ref('rooms/'+roomKey+'/messages').on('value', function(result) {
-        if(JSON.stringify(messages)!==JSON.stringify(result.val())){
-             setMessages(result.val());
-            //console.log('mudou');
+    database.ref('rooms/'+roomKey+'/messages').orderByChild('timestamp').on('value', function(result) {
+        if(result.val()!=null && JSON.stringify(messages)!==JSON.stringify(result.val())){
+            setMessages(result.val());
+        } else if (result.val()==null){
+            setMessages([]);
         }
      });
 }
@@ -118,31 +119,19 @@ export const login = async(email:string, password:string) => {
     }
 }
 
-const getMessagesCount = async (roomKey:string) =>{
-    let size=0;
-    await database.ref('/rooms/'+roomKey+'/messages').once('value', (result)=>{
-        if(result.val()){
-            const obj = Object.values(result.val());
-            size=obj.length;
-        } 
-    });
-    return size;
-}
-
 export const sendMessage = async (room:string, content:string, user:any) =>{
     try{
         const {key:roomKey} = await findRoomByName(room);
-        const position = await getMessagesCount(roomKey);
         const {data} = await axios.get('http://worldtimeapi.org/api/timezone/America/Sao_Paulo');
         const time = data.datetime;
-        await database.ref('/rooms/'+roomKey+'/messages/'+position).set({
+        await database.ref('/rooms/'+roomKey+'/messages/').push({
             username: user.name,
             email: user.email,
             content,
             timestamp: moment(time).format()
         });
     } catch(error){
-
+        console.log(error)
     }
 }
 

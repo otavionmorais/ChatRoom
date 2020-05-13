@@ -1,4 +1,4 @@
-import {IonContent,  IonProgressBar, IonHeader, IonToolbar, IonButtons, IonPage, IonItem, IonLabel, IonInput, IonButton, useIonViewWillEnter } from '@ionic/react';
+import {IonContent,  IonProgressBar, IonHeader, IonToolbar, IonAlert, IonPage, IonItem, IonLabel, IonInput, IonButton, useIonViewWillEnter } from '@ionic/react';
 import React, { useState } from 'react';
 import {  useHistory, useLocation } from 'react-router';
 import './Conversa.css';
@@ -16,22 +16,17 @@ const Conversa: React.FC = () => {
   const [messages, setMessages]:any = useState(null);
   const [digitado, setDigitado] = useState("");
   const [mostrarLoading, setMostrarLoading] = useState(false);
-  
-  
-  updateMessages(room, messages, setMessages);
- 
-  
-
-
   const container:any = document.getElementById('conversa-container');
   const botaoEnviar:any = document.getElementById('botao-enviar-conversa');
-/*
+  
+  updateMessages(room, messages, setMessages);
+
   if(container){
     container.scrollTop = container.scrollHeight;
   }
-*/
+
   const enviarMensagem = async () => {
-    if(digitado !== ""){
+    if(digitado.replace(/ /g,'') !== ''){
       botaoEnviar.disabled = true;
       setMostrarLoading(true);
       await sendMessage(room, digitado, user);
@@ -64,11 +59,10 @@ const Conversa: React.FC = () => {
 
       <IonContent color="dark">
         <div id="conversa-container">
-          { isArray(messages)? messages.map((message:any, index:number)=>{
-              let myMessage = (message.email===user.email);
-              container.scrollTop = container.scrollHeight;
-              return <Message key={index} children={{key:index, user, message, myMessage}}/>;
-          }):''}
+          { messages? Object.keys(messages).map((message:any, index:number)=>{
+              let myMessage = (messages[message].email===user.email);
+              return <Message key={index} children={{key:index, message: messages[message], myMessage}}/>;
+          }):<IonAlert isOpen={true} header={'Carregando mensagens...'}/>}
         </div>
         <div id="campos-conversa">
           <IonItem color="light" id="input-conversa">
