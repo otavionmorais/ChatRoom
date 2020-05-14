@@ -1,4 +1,4 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonToolbar } from '@ionic/react';
+import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonToolbar, IonButton, IonIcon } from '@ionic/react';
 import React, { useState } from 'react';
 import { useHistory, useLocation, Redirect } from 'react-router';
 import './Rooms.css';
@@ -7,6 +7,7 @@ import { presentToast } from '../toast';
 import Menu from '../components/Menu';
 import Chat from '../components/Chat';
 import { updateUser } from '../firebaseConfig';
+import { addCircleOutline, addOutline } from 'ionicons/icons';
 
 const Rooms: React.FC = () => {
 
@@ -30,6 +31,9 @@ const Rooms: React.FC = () => {
             <div id="bar-rooms">
               Suas salas
             </div>
+            <IonButtons slot="end">
+              <IonButton onClick={()=>console.log('oi')}><IonIcon icon={addOutline}></IonIcon> </IonButton>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
       <IonContent color="dark">

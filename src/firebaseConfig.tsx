@@ -90,9 +90,13 @@ export const updateMessages = async (room:string, messages:any, setMessages:Func
     const {key:roomKey} = await findRoomByName(room);
     database.ref('rooms/'+roomKey+'/messages').off();
     database.ref('rooms/'+roomKey+'/messages').orderByChild('timestamp').on('value', function(result) {
-        if(result.val()!=null && JSON.stringify(messages)!==JSON.stringify(result.val())){
-            setMessages(result.val());
-        } else if (result.val()==null){
+        if(result.val()!=null){// && JSON.stringify(messages)!==JSON.stringify(result.val())){
+            const newMessages:any = [];
+            result.forEach(message=>{
+                newMessages.push(message.val());
+            });
+            setMessages(newMessages);
+        } else {
             setMessages([]);
         }
      });
