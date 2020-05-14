@@ -16,7 +16,6 @@ const Conversa: React.FC = () => {
   const [messages, setMessages]:any = useState(null);
   const [digitado, setDigitado] = useState("");
   const [mostrarLoading, setMostrarLoading] = useState(false);
-  //const [needToScroll, setNeedToScroll] = useState(true);
   const botaoEnviar:any = document.getElementById('botao-enviar-conversa');
 
   const scroll = () => {

@@ -20,7 +20,6 @@ const findUserByEmail = async(email:string) => {
     let databaseKey:any = null;
     try{
         await database.ref('/users').once('value', (result)=> {
-            
             result.forEach((user)=> {
                 if(user.val().email===email){
                     databaseKey = user.key;
@@ -95,6 +94,17 @@ export const updateMessages = async (room:string, messages:any, setMessages:Func
             setMessages(result.val());
         } else if (result.val()==null){
             setMessages([]);
+        }
+     });
+}
+
+export const updateUser = async (email:string, user:any, setUser:Function)=>{
+
+    const {key:userKey} = await findUserByEmail(email);
+    database.ref('users/'+userKey).off();
+    database.ref('users/'+userKey).on('value', function(result) {
+        if(result.val()!=null && JSON.stringify(user)!==JSON.stringify(result.val())){
+            setUser(result.val());
         }
      });
 }

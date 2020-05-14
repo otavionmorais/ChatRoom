@@ -1,22 +1,24 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonToolbar } from '@ionic/react';
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory, useLocation, Redirect } from 'react-router';
 import './Rooms.css';
 import { presentToast } from '../toast';
 
 import Menu from '../components/Menu';
 import Chat from '../components/Chat';
+import { updateUser } from '../firebaseConfig';
 
 const Rooms: React.FC = () => {
 
   const history = useHistory();
   const location:any = useLocation();
-  const user = location.state?.user;
+  const [user, setUser]:any = useState(location.state?.user);
 
- // console.log(user);
-  if(!user)
-    return (<IonPage>Usuário inválido.</IonPage>);
+  if(!location.state || !user){
+    return <Redirect to="/login"/>;
+  }
 
+  updateUser(user.email, user, setUser);
 
   return (
     <IonPage>
