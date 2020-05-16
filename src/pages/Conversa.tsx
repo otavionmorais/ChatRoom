@@ -17,6 +17,14 @@ const Conversa: React.FC = () => {
   const [digitado, setDigitado] = useState("");
   const [mostrarLoading, setMostrarLoading] = useState(false);
   const botaoEnviar:any = document.getElementById('botao-enviar-conversa');
+  
+  const setMessagesAndScroll = (newMessages:any) => {
+    //const container:any = document.getElementById('conversa-container');
+    //let scrollAutomatico = true;
+
+    setMessages(newMessages);
+    scroll();
+  }
 
   const scroll = () => {
     const container:any = document.getElementById('conversa-container');
@@ -25,16 +33,13 @@ const Conversa: React.FC = () => {
     }
   }
 
-  const setMessagesAndScroll = (messages:any) => {
-    setMessages(messages);
-    scroll();
-  }
-
-  updateMessages(room, messages, setMessagesAndScroll);
+  if(!messages)
+    updateMessages(room, messages, setMessagesAndScroll)
+  
 
   window.onresize = () =>{
     scroll();
-  }
+  } 
 
   const enviarMensagem = async () => {
     if(digitado.replace(/ /g,'') !== ''){

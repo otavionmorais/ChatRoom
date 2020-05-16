@@ -1,6 +1,6 @@
 import {IonContent,  IonProgressBar, IonPage, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
 import React, { useState } from 'react';
-import {  useHistory } from 'react-router';
+import {  useHistory, Redirect } from 'react-router';
 import './Login.css';
 import {login, createRoom, addUserToRoom } from '../firebaseConfig';
 import { presentToast } from '../toast';
@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     setMostrarLoading(true);
     const user = await login(email, senha);
     if(user){
-        
+        //localStorage.setItem('user', JSON.stringify(user));
         history.replace('/rooms', {user});
         
     } else {
@@ -27,7 +27,14 @@ const Login: React.FC = () => {
     }
     setMostrarLoading(false);
   }
-
+/*
+  if(localStorage.getItem('user'))
+    return <Redirect to={{
+      pathname: '/rooms',
+      state: {
+        user: JSON.parse(localStorage.getItem('user')!)
+      }
+    }}/> */
  
 
   return (
