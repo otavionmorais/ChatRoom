@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import { presentToast } from './toast';
 import {config} from './apiKey';
 import moment from 'moment';
 import axios from 'axios';
@@ -55,6 +54,8 @@ export const findRoomByName = async (name:string) =>{
                 }
             });
         });
+        if(!databaseKey || !databaseRoom)
+            return null;
         return {...databaseRoom, key: databaseKey};
     } catch(error){
         return null;
@@ -63,12 +64,21 @@ export const findRoomByName = async (name:string) =>{
 
 export const addUserToRoom = async (user:string, roomName:string) => {
     try{
-        const {key:userKey, rooms:userRooms} = await findUserByEmail(user);
-        const {key:roomKey, users:roomUsers} = await findRoomByName(roomName);
-
-        if(roomUsers.find(user) || userRooms.find(roomName))
-            return null;
-
+        let {key:userKey, rooms:userRooms} = await findUserByEmail(user);
+        let {key:roomKey, users:roomUsers} = await findRoomByName(roomName);
+        //console.log('oi')
+        //console.log('user da sala: '+ roomUsers.find(user), "salas dopuser"+userRooms.find(roomName))
+        if(roomUsers && userRooms) {
+            if(roomUsers.find(user) || userRooms.find(roomName))
+                return null;
+        }
+        if(!roomUsers) 
+            roomUsers = [];
+        
+        if(!userRooms)
+            userRooms = [];
+        
+            
         roomUsers.push(user);
         userRooms.push(roomName);
         fcm.subscribeTo({ topic: roomName });
@@ -76,7 +86,7 @@ export const addUserToRoom = async (user:string, roomName:string) => {
         await database.ref('/rooms/'+roomKey+'/users').set(roomUsers);
         await database.ref('/users/'+userKey+'/rooms').set(userRooms);
     } catch(error){
-        
+        console.log(error)
         return null;
     }
 
@@ -86,7 +96,8 @@ export const createRoom = async(name:string, user:any) =>{
     const exists = await findRoomByName(name);
 
     if(!exists){
-        await database.ref('/rooms').push({name, users:[user.email]});
+        await database.ref('/rooms').push({name});
+        await addUserToRoom(user.email, name);
         return true;
     } else {
         await addUserToRoom(user.email, name);

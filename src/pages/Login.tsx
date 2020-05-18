@@ -13,7 +13,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarLoading, setMostrarLoading] = useState(false);
-  const [loginAnterior, setLoginAnterior] = useState(JSON.parse(localStorage.getItem('user')!));
+  const [loginAnterior, ] = useState(JSON.parse(localStorage.getItem('user')!));
   
   const logar = async() => {
     setMostrarLoading(true);

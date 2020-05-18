@@ -1,4 +1,4 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonToolbar, IonButton, IonIcon } from '@ionic/react';
+import { IonButtons, IonContent, IonHeader, IonAlert, IonMenuButton, IonPage, IonToolbar, IonButton, IonIcon } from '@ionic/react';
 import React, { useState } from 'react';
 import { useHistory, useLocation, Redirect } from 'react-router';
 import './Rooms.css';
@@ -6,22 +6,22 @@ import { presentToast } from '../toast';
 
 import Menu from '../components/Menu';
 import Chat from '../components/Chat';
-import { updateUser } from '../firebaseConfig';
+import { updateUser, addUserToRoom, createRoom } from '../firebaseConfig';
 import { addCircleOutline, addOutline } from 'ionicons/icons';
 
 const Rooms: React.FC = () => {
 
-  const history = useHistory();
   const location:any = useLocation();
   const [user, setUser]:any = useState(location.state?.user);
+  const [showAlert1, setShowAlert1] = useState(false);
 
   if(!location.state || !user){
     return <Redirect to="/login"/>;
   }
 
   updateUser(user.email, user, setUser);
-
-  //console.log('att');
+  localStorage.setItem('user', JSON.stringify(user));
+  location.state.user = user;
 
   return (
     <IonPage>
@@ -34,7 +34,36 @@ const Rooms: React.FC = () => {
               Suas salas
             </div>
             <IonButtons slot="end">
-              <IonButton onClick={()=>console.log('oi')}><IonIcon icon={addOutline}></IonIcon> </IonButton>
+            <IonAlert
+              isOpen={showAlert1}
+              onDidDismiss={() => setShowAlert1(false)}
+              header={'Criar ou entrar em sala'}
+              inputs={[
+                {
+                  name: 'roomName',
+                  type: 'text',
+                  placeholder: 'Nome da sala'
+                }
+              ]}
+              buttons={[
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                  handler: () => {
+                   
+                  }
+                },
+                {
+                  text: 'Ok',
+                  handler: async (data) => {
+                    await createRoom(data.roomName, user);
+                    presentToast('Entrou na sala com sucesso.')
+                  }
+                }
+              ]}
+            />
+              <IonButton onClick={()=>setShowAlert1(true)}><IonIcon icon={addOutline}></IonIcon> </IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
