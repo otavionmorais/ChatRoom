@@ -3,7 +3,14 @@ import { presentToast } from './toast';
 import {config} from './apiKey';
 import moment from 'moment';
 import axios from 'axios';
-import { isArray } from 'util';
+import { FCM } from "capacitor-fcm";
+import { Plugins } from "@capacitor/core";
+const { PushNotifications} = Plugins;
+const fcm = new FCM();
+
+PushNotifications.register().then(()=>{
+  fcm.subscribeTo({ topic: "all" });
+});
 
 firebase.initializeApp(config);
 
@@ -64,6 +71,7 @@ export const addUserToRoom = async (user:string, roomName:string) => {
 
         roomUsers.push(user);
         userRooms.push(roomName);
+        fcm.subscribeTo({ topic: roomName });
 
         await database.ref('/rooms/'+roomKey+'/users').set(roomUsers);
         await database.ref('/users/'+userKey+'/rooms').set(userRooms);
@@ -145,6 +153,7 @@ export const sendMessage = async (room:string, content:string, user:any) =>{
             content,
             timestamp: moment(time).valueOf()
         });
+        await axios.get('https://om.blog.br/chatroom/notificacao?titulo='+room+'&msg='+user.name+': '+content+'&room='+room);
     } catch(error){
         console.log(error)
     }

@@ -24,20 +24,13 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 import { Plugins } from "@capacitor/core";
-import { FCM } from "capacitor-fcm";
+
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import Rooms from './pages/Rooms';
 import { menuController } from "@ionic/core";
 import Conversa from './pages/Conversa';
-const { PushNotifications, SplashScreen } = Plugins;
-
-const fcm = new FCM();
-
-PushNotifications.register().then(()=>{
-  fcm.subscribeTo({ topic: "teste" });
-});
-
+const { SplashScreen } = Plugins;
 
 
 // <Menu />

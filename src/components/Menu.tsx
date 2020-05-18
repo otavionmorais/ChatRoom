@@ -12,7 +12,7 @@ import {
 } from '@ionic/react';
 
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory, Redirect } from 'react-router-dom';
 import { closeOutline, logoAmazon, logOutOutline } from 'ionicons/icons';
 import './Menu.css';
 import { menuController } from "@ionic/core";
@@ -23,6 +23,7 @@ const Menu: React.FC = () => {
   const location:any = useLocation();
   const user = location.state?.user;
   const history = useHistory();
+  console.log(user)
 
   if(!user)
     return (<IonPage></IonPage>)
@@ -51,7 +52,9 @@ const Menu: React.FC = () => {
             <IonItem  onClick={ async()=>{
               await menuController.close();
               delete location.state.user;
+              localStorage.removeItem('user');
               history.push('/login');
+              //return <Redirect to="/login"/>
             }} lines="none">
               <IonIcon slot="start" icon={logOutOutline} />
               <IonLabel>Sair</IonLabel>

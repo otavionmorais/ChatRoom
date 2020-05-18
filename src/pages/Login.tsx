@@ -1,4 +1,4 @@
-import {IonContent,  IonProgressBar, IonPage, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
+import {IonContent,  IonProgressBar, IonPage, IonItem, IonLabel, IonInput, IonButton, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import React, { useState } from 'react';
 import {  useHistory, Redirect } from 'react-router';
 import './Login.css';
@@ -13,13 +13,13 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarLoading, setMostrarLoading] = useState(false);
-
+  const [loginAnterior, setLoginAnterior] = useState(JSON.parse(localStorage.getItem('user')!));
   
   const logar = async() => {
     setMostrarLoading(true);
     const user = await login(email, senha);
     if(user){
-        //localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('user', JSON.stringify(user));
         history.replace('/rooms', {user});
         
     } else {
@@ -27,15 +27,12 @@ const Login: React.FC = () => {
     }
     setMostrarLoading(false);
   }
-/*
-  if(localStorage.getItem('user'))
-    return <Redirect to={{
-      pathname: '/rooms',
-      state: {
-        user: JSON.parse(localStorage.getItem('user')!)
-      }
-    }}/> */
- 
+
+  useIonViewWillEnter(()=>{
+    if(loginAnterior){
+      history.replace('/rooms', {user: loginAnterior});
+    }
+  });
 
   return (
     <IonPage>

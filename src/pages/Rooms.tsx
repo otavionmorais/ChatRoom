@@ -21,6 +21,8 @@ const Rooms: React.FC = () => {
 
   updateUser(user.email, user, setUser);
 
+  //console.log('att');
+
   return (
     <IonPage>
         <IonHeader>
