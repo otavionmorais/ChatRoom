@@ -6,6 +6,10 @@
   z-index: 99;
 }
 
+#menu{
+  position:fixed;
+}
+
 ion-menu ion-content {
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
   pointer-events:all!important;

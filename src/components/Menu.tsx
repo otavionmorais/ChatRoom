@@ -15,6 +15,7 @@ import { useLocation, useHistory, Redirect } from 'react-router-dom';
 import { closeOutline, logoAmazon, logOutOutline } from 'ionicons/icons';
 import './Menu.css';
 import { menuController } from "@ionic/core";
+import { fcm } from '../firebaseConfig';
 
 const Menu: React.FC = () => {
   const location:any = useLocation();
@@ -25,7 +26,7 @@ const Menu: React.FC = () => {
     return (<IonPage></IonPage>)
 
   return (
-    <IonMenu contentId="main" type="overlay">
+    <IonMenu contentId="main" type="overlay" id="menu">
       <IonContent>
      
         <div id="fechar-menu" onClick={async()=>{menuController.close()}}>
@@ -47,6 +48,9 @@ const Menu: React.FC = () => {
         <IonList id="labels-list">
             <IonItem  onClick={ async()=>{
               await menuController.close();
+              user?.rooms?.forEach((room:any)=>{
+                fcm.unsubscribeFrom({ topic: room }).catch();
+              });
               delete location.state.user;
               localStorage.removeItem('user');
               history.replace('/login');

@@ -2,9 +2,12 @@ import {IonContent,  IonProgressBar, IonPage, IonItem, IonLabel, IonInput, IonBu
 import React, { useState } from 'react';
 import {  useHistory, Redirect } from 'react-router';
 import './Login.css';
-import {login, createRoom, addUserToRoom } from '../firebaseConfig';
+import {login, createRoom, addUserToRoom, fcm } from '../firebaseConfig';
 import { presentToast } from '../toast';
 import Logo from '../images/crlogolight.png';
+import { Plugins } from "@capacitor/core";
+import { FCM } from 'capacitor-fcm';
+const { PushNotifications} = Plugins;
 
 
 const Login: React.FC = () => {
@@ -27,6 +30,10 @@ const Login: React.FC = () => {
     }
     setMostrarLoading(false);
   }
+
+  PushNotifications.register().then(()=>{
+    fcm.subscribeTo({ topic: "all" }).catch();
+  });
 
   useIonViewWillEnter(()=>{
     if(loginAnterior){

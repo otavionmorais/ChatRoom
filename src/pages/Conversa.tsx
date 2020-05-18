@@ -1,11 +1,9 @@
-import {IonContent,  IonProgressBar, IonHeader, IonToolbar, IonAlert, IonPage, IonItem, IonLabel, IonInput, IonButton, useIonViewWillEnter } from '@ionic/react';
+import {IonContent,  IonProgressBar, IonHeader, IonToolbar, IonAlert, IonPage, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
 import React, { useState } from 'react';
 import {  useHistory, useLocation } from 'react-router';
 import './Conversa.css';
 import {updateMessages, sendMessage } from '../firebaseConfig';
 import Message from '../components/Message'
-import { isArray } from 'util';
-
 
 const Conversa: React.FC = () => {
 

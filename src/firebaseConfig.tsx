@@ -5,11 +5,7 @@ import axios from 'axios';
 import { FCM } from "capacitor-fcm";
 import { Plugins } from "@capacitor/core";
 const { PushNotifications} = Plugins;
-const fcm = new FCM();
-
-PushNotifications.register().then(()=>{
-  fcm.subscribeTo({ topic: "all" });
-});
+export const fcm = new FCM();
 
 firebase.initializeApp(config);
 
@@ -81,7 +77,6 @@ export const addUserToRoom = async (user:string, roomName:string) => {
             
         roomUsers.push(user);
         userRooms.push(roomName);
-        fcm.subscribeTo({ topic: roomName });
 
         await database.ref('/rooms/'+roomKey+'/users').set(roomUsers);
         await database.ref('/users/'+userKey+'/rooms').set(userRooms);
@@ -89,6 +84,9 @@ export const addUserToRoom = async (user:string, roomName:string) => {
         console.log(error)
         return null;
     }
+}
+
+export const removeUserFromRoom = async(user:any, roomName:string) =>{
 
 }
 
@@ -128,6 +126,9 @@ export const updateUser = async (email:string, user:any, setUser:Function)=>{
     database.ref('users/'+userKey).off();
     database.ref('users/'+userKey).on('value', function(result) {
         if(result.val()!=null && JSON.stringify(user)!==JSON.stringify(result.val())){
+            result.val().rooms?.forEach((room:any)=>{
+                fcm.subscribeTo({ topic: room }).catch();
+            });
             setUser(result.val());
         }
      });
