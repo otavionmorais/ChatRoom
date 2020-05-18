@@ -20,7 +20,8 @@ const Rooms: React.FC = () => {
   }
 
   updateUser(user.email, user, setUser);
-  localStorage.setItem('user', JSON.stringify(user));
+  if(localStorage.getItem('user'))
+    localStorage.setItem('user', JSON.stringify(user));
   location.state.user = user;
 
   return (
