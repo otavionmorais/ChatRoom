@@ -65,7 +65,7 @@ export const addUserToRoom = async (user:string, roomName:string) => {
         //console.log('oi')
         //console.log('user da sala: '+ roomUsers.find(user), "salas dopuser"+userRooms.find(roomName))
         if(roomUsers && userRooms) {
-            if(roomUsers.find(user) || userRooms.find(roomName))
+            if(roomUsers.find( (element:any) => element === user) || userRooms.find((element:any) => element === roomName))
                 return null;
         }
         if(!roomUsers) 
@@ -88,7 +88,10 @@ export const addUserToRoom = async (user:string, roomName:string) => {
 
 export const removeUserFromRoom = async(user:any, roomName:string) =>{
 
+    //if(user)
 }
+
+addUserToRoom('batata@gmail.com', 'chatroom');
 
 export const createRoom = async(name:string, user:any) =>{
     const exists = await findRoomByName(name);
