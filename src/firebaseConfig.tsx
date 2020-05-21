@@ -88,10 +88,25 @@ export const addUserToRoom = async (user:string, roomName:string) => {
 
 export const removeUserFromRoom = async(user:any, roomName:string) =>{
 
-    //if(user)
+    try{
+        let {key:userKey, rooms:userRooms} = await findUserByEmail(user);
+        let {key:roomKey, users:roomUsers} = await findRoomByName(roomName);
+        
+        if(roomUsers && userRooms) {
+            //console.log(roomUsers.indexOf(roomName))
+            roomUsers.splice(roomUsers.indexOf(user), 1);
+            userRooms.splice(userRooms.indexOf(roomName), 1);
+
+            await database.ref('/rooms/'+roomKey+'/users').set(roomUsers);
+            await database.ref('/users/'+userKey+'/rooms').set(userRooms);
+        }
+    } catch(error){
+        console.log(error)
+        return null;
+    }
+
 }
 
-addUserToRoom('batata@gmail.com', 'chatroom');
 
 export const createRoom = async(name:string, user:any) =>{
     const exists = await findRoomByName(name);
