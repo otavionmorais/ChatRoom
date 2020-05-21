@@ -183,7 +183,7 @@ export const sendMessage = async (room:string, content:string, user:any) =>{
             content,
             timestamp: moment(time).valueOf()
         });
-        await axios.get('https://om.blog.br/chatroom/notificacao?titulo='+room+'&msg='+user.name+': '+content+'&room='+room);
+        axios.get('https://om.blog.br/chatroom/notificacao?titulo='+room+'&msg='+user.name+': '+content+'&room='+room);
     } catch(error){
         console.log(error)
     }

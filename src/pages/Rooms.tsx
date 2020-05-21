@@ -1,4 +1,4 @@
-import { IonButtons, IonContent, IonHeader, IonAlert, IonMenuButton, IonPage, IonToolbar, IonButton, IonIcon } from '@ionic/react';
+import { IonButtons, IonContent, IonHeader, IonAlert, IonActionSheet, IonMenuButton, IonPage, IonToolbar, IonButton, IonIcon } from '@ionic/react';
 import React, { useState } from 'react';
 import { useHistory, useLocation, Redirect } from 'react-router';
 import './Rooms.css';
@@ -6,14 +6,23 @@ import { presentToast } from '../toast';
 
 import Menu from '../components/Menu';
 import Chat from '../components/Chat';
-import { updateUser, addUserToRoom, createRoom } from '../firebaseConfig';
-import { addCircleOutline, addOutline } from 'ionicons/icons';
+import { updateUser, addUserToRoom, createRoom, removeUserFromRoom } from '../firebaseConfig';
+import { addCircleOutline, addOutline, trash, close } from 'ionicons/icons';
+import LongPressable from 'react-longpressable';
+
 
 const Rooms: React.FC = () => {
 
   const location:any = useLocation();
   const [user, setUser]:any = useState(location.state?.user);
   const [showAlert1, setShowAlert1] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
+  const [selectedRoom, setSelectedRoom]:any = useState(null);
+
+  const longPress = (roomName) =>{
+    setSelectedRoom(roomName);
+    setShowActionSheet(true);
+  }
 
   if(!location.state || !user){
     return <Redirect to="/login"/>;
@@ -72,10 +81,28 @@ const Rooms: React.FC = () => {
         <Menu/>
         <div id="rooms-container">
           {user.rooms? user.rooms.map((room:any, index:number)=>{
-            return <Chat key={index} children={{room, user}}/>
+            return <LongPressable onLongPress={()=>{longPress(room)}} ><Chat key={index} children={{room, user}}/></LongPressable>
           }):''}
           
         </div>
+        <IonActionSheet
+          isOpen={showActionSheet}
+          onDidDismiss={() => setShowActionSheet(false)}
+          header = {selectedRoom}
+          buttons={[{
+            text: 'Sair da sala',
+            icon: trash,
+            handler: async () => {
+              await removeUserFromRoom(user.email, selectedRoom);
+              presentToast('Sala '+selectedRoom+" removida.")
+            }
+          }, {
+            text: 'Cancelar',
+            icon: close,
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          }]}/>
       </IonContent>
     </IonPage>
   );

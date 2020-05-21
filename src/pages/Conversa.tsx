@@ -79,7 +79,7 @@ const Conversa: React.FC = () => {
           }) :<IonAlert isOpen={true} header={'Carregando mensagens...'}/>}
         </div>
         <div id="campos-conversa">
-          <IonItem color="light" id="input-conversa">
+          <IonItem  color="light" id="input-conversa">
               <IonInput type="text" value={digitado} placeholder="Digite aqui..." onIonChange={(e:any) => setDigitado(e.target.value)} ></IonInput>
           </IonItem>
           <IonButton id="botao-enviar-conversa" onClick={enviarMensagem}>
