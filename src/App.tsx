@@ -1,8 +1,7 @@
-import Menu from './components/Menu';
 import React from 'react';
-import { IonApp, IonRouterOutlet, IonSplitPane, useIonViewDidEnter } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Redirect, Route, useLocation } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -24,11 +23,9 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 import { Plugins } from "@capacitor/core";
-
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import Rooms from './pages/Rooms';
-import { menuController } from "@ionic/core";
 import Conversa from './pages/Conversa';
 const { SplashScreen } = Plugins;
 

@@ -3,8 +3,6 @@ import {config} from './apiKey';
 import moment from 'moment';
 import axios from 'axios';
 import { FCM } from "capacitor-fcm";
-import { Plugins } from "@capacitor/core";
-const { PushNotifications} = Plugins;
 export const fcm = new FCM();
 
 firebase.initializeApp(config);
@@ -108,6 +106,7 @@ export const removeUserFromRoom = async(user:any, roomName:string) =>{
 }
 
 
+
 export const createRoom = async(name:string, user:any) =>{
     const exists = await findRoomByName(name);
 
@@ -145,7 +144,7 @@ export const updateUser = async (email:string, user:any, setUser:Function)=>{
     database.ref('users/'+userKey).on('value', function(result) {
         if(result.val()!=null && JSON.stringify(user)!==JSON.stringify(result.val())){
             result.val().rooms?.forEach((room:any)=>{
-                fcm.subscribeTo({ topic: room }).catch();
+                fcm.subscribeTo({ topic: room }).catch(()=>{});
             });
             setUser(result.val());
         }

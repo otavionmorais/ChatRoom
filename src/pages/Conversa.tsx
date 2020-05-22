@@ -1,13 +1,12 @@
-import {IonContent,  IonProgressBar, IonHeader, IonToolbar, IonAlert, IonPage, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
+import {IonContent,  IonProgressBar, IonHeader, IonToolbar, IonAlert, IonPage, IonItem, IonInput, IonButton } from '@ionic/react';
 import React, { useState } from 'react';
-import {  useHistory, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import './Conversa.css';
 import {updateMessages, sendMessage } from '../firebaseConfig';
 import Message from '../components/Message'
 
 const Conversa: React.FC = () => {
 
-  const history = useHistory();
   const location:any = useLocation(); 
   const room = location.state.room;
   const user = location.state.user;
@@ -17,9 +16,6 @@ const Conversa: React.FC = () => {
   const botaoEnviar:any = document.getElementById('botao-enviar-conversa');
   
   const setMessagesAndScroll = (newMessages:any) => {
-    //const container:any = document.getElementById('conversa-container');
-    //let scrollAutomatico = true;
-
     setMessages(newMessages);
     scroll();
   }

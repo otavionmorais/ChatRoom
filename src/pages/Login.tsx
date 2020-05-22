@@ -1,14 +1,12 @@
-import {IonContent,  IonProgressBar, IonPage, IonItem, IonLabel, IonInput, IonButton, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
+import {IonContent,  IonProgressBar, IonPage, IonItem, IonLabel, IonInput, IonButton, useIonViewDidEnter } from '@ionic/react';
 import React, { useState } from 'react';
-import {  useHistory, Redirect } from 'react-router';
+import {  useHistory} from 'react-router';
 import './Login.css';
-import {login, createRoom, addUserToRoom, fcm } from '../firebaseConfig';
+import {login, fcm } from '../firebaseConfig';
 import { presentToast } from '../toast';
 import Logo from '../images/crlogolight.png';
 import { Plugins } from "@capacitor/core";
-import { FCM } from 'capacitor-fcm';
 const { PushNotifications} = Plugins;
-
 
 const Login: React.FC = () => {
 
@@ -32,10 +30,10 @@ const Login: React.FC = () => {
   }
 
   PushNotifications.register().then(()=>{
-    fcm.subscribeTo({ topic: "all" }).catch();
-  });
+    fcm.subscribeTo({ topic: "all" }).catch(()=>{});
+  }).catch(()=>{});
 
-  useIonViewWillEnter(()=>{
+  useIonViewDidEnter(()=>{
     if(loginAnterior){
       history.replace('/rooms', {user: loginAnterior});
     }
@@ -47,7 +45,7 @@ const Login: React.FC = () => {
       <IonContent color="dark">
         <div id="login-container">
             
-            <img id="logo-login" width="200px" height="70px" src={Logo}/>
+            <img id="logo-login" width="200px" height="70px" src={Logo} alt=""/>
             <span id="descricao-login">Converse o que quiser, quando quiser. 💬 </span>
 
             <div id="login-campos-container">

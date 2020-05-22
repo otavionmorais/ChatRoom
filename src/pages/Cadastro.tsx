@@ -41,7 +41,7 @@ const Cadastro: React.FC = () => {
       <IonContent color="dark">
         <div id="cadastro-container">
             <IonIcon icon={arrowBack} onClick={()=>history.replace('/login')} color="light"/>
-            <img src={Logo} id="logo-cadastro"/>
+            <img src={Logo} id="logo-cadastro" alt=""/>
             <div id="titulo-cadastro">Cadastro</div>
             <div id="cadastro-campos-container">
                 <IonItem color="light" className="input-cadastro">

@@ -1,15 +1,16 @@
 import { IonButtons, IonContent, IonHeader, IonAlert, IonActionSheet, IonMenuButton, IonPage, IonToolbar, IonButton, IonIcon } from '@ionic/react';
 import React, { useState } from 'react';
-import { useHistory, useLocation, Redirect } from 'react-router';
+import { useLocation, Redirect } from 'react-router';
 import './Rooms.css';
 import { presentToast } from '../toast';
 
 import Menu from '../components/Menu';
 import Chat from '../components/Chat';
-import { updateUser, addUserToRoom, createRoom, removeUserFromRoom } from '../firebaseConfig';
-import { addCircleOutline, addOutline, trash, close } from 'ionicons/icons';
+import { updateUser, createRoom, removeUserFromRoom } from '../firebaseConfig';
+import { addOutline, trash, close } from 'ionicons/icons';
 import LongPressable from 'react-longpressable';
 
+const ROOM_NAME_REGEX = /^([a-z]{2,10}[0-9]{0,3})$/
 
 const Rooms: React.FC = () => {
 
@@ -60,15 +61,18 @@ const Rooms: React.FC = () => {
                   text: 'Cancel',
                   role: 'cancel',
                   cssClass: 'secondary',
-                  handler: () => {
-                   
-                  }
+                  handler: () => {}
                 },
                 {
                   text: 'Ok',
                   handler: async (data) => {
-                    await createRoom(data.roomName, user);
-                    presentToast('Entrou na sala com sucesso.')
+                    const nomeFinal = data.roomName?.toLowerCase();
+                    if(ROOM_NAME_REGEX.test(nomeFinal)){
+                      await createRoom(nomeFinal, user);
+                      presentToast('Entrou na sala com sucesso.');
+                    } else {
+                      presentToast('O nome da sala deve conter somente letras e números, sem acentos ou espaços.');
+                    }
                   }
                 }
               ]}
@@ -81,7 +85,7 @@ const Rooms: React.FC = () => {
         <Menu/>
         <div id="rooms-container">
           {user.rooms? user.rooms.map((room:any, index:number)=>{
-            return <LongPressable onLongPress={()=>{longPress(room)}} ><Chat key={index} children={{room, user}}/></LongPressable>
+            return <LongPressable key={index} onShortPress={()=>{}} onLongPress={()=>{longPress(room)}} ><Chat key={index} children={{room, user}}/></LongPressable>
           }):''}
           
         </div>
@@ -99,9 +103,7 @@ const Rooms: React.FC = () => {
           }, {
             text: 'Cancelar',
             icon: close,
-            handler: () => {
-              console.log('Cancel clicked');
-            }
+            handler: () => {}
           }]}/>
       </IonContent>
     </IonPage>

@@ -9,10 +9,9 @@ import {
   IonNote,
   IonPage,
 } from '@ionic/react';
-
 import React from 'react';
-import { useLocation, useHistory, Redirect } from 'react-router-dom';
-import { closeOutline, logoAmazon, logOutOutline } from 'ionicons/icons';
+import { useLocation, useHistory } from 'react-router-dom';
+import { closeOutline, informationCircle, logOutOutline } from 'ionicons/icons';
 import './Menu.css';
 import { menuController } from "@ionic/core";
 import { fcm } from '../firebaseConfig';
@@ -33,14 +32,13 @@ const Menu: React.FC = () => {
           <IonIcon icon={closeOutline} color="dark"/>
         </div>
         
-        
         <IonList id="inbox-list">
           <IonListHeader>{user.name}</IonListHeader>
           <IonNote>{user.email}</IonNote>
          
                 <IonItem lines="none">
-                  <IonIcon slot="start" icon={logoAmazon} />
-                  <IonLabel>oi</IonLabel>
+                  <IonIcon slot="start" icon={informationCircle} />
+                  <IonLabel>Em breve</IonLabel>
                 </IonItem>
             
         </IonList>
@@ -49,7 +47,7 @@ const Menu: React.FC = () => {
             <IonItem  onClick={ async()=>{
               await menuController.close();
               user?.rooms?.forEach((room:any)=>{
-                fcm.unsubscribeFrom({ topic: room }).catch();
+                fcm.unsubscribeFrom({ topic: room }).catch(()=>{});
               });
               delete location.state.user;
               localStorage.removeItem('user');
