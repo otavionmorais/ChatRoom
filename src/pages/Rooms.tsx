@@ -9,6 +9,7 @@ import Chat from '../components/Chat';
 import { updateUser, createRoom, removeUserFromRoom } from '../firebaseConfig';
 import { addOutline, trash, close } from 'ionicons/icons';
 import LongPressable from 'react-longpressable';
+import OMMessageBox from '../components/OMMessageBox'
 
 const ROOM_NAME_REGEX = /^([a-z]{2,10}[0-9]{0,3})$/
 
@@ -17,6 +18,7 @@ const Rooms: React.FC = () => {
   const location:any = useLocation();
   const [user, setUser]:any = useState(location.state?.user);
   const [showAlert1, setShowAlert1] = useState(false);
+  const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [selectedRoom, setSelectedRoom]:any = useState(null);
 
@@ -56,6 +58,7 @@ const Rooms: React.FC = () => {
                   placeholder: 'Nome da sala'
                 }
               ]}
+              
               buttons={[
                 {
                   text: 'Cancel',
@@ -77,11 +80,15 @@ const Rooms: React.FC = () => {
                 }
               ]}
             />
-              <IonButton onClick={()=>setShowAlert1(true)}><IonIcon icon={addOutline}></IonIcon> </IonButton>
+              <IonButton onClick={()=>setShowCreateRoom(!showCreateRoom)}><IonIcon icon={addOutline}></IonIcon> </IonButton>
+              
             </IonButtons>
           </IonToolbar>
         </IonHeader>
       <IonContent color="dark">
+      { showCreateRoom && (
+                <OMMessageBox children={{user, set: setShowCreateRoom}}/>
+              )}
         <Menu/>
         <div id="rooms-container">
           {user.rooms? user.rooms.map((room:any, index:number)=>{
