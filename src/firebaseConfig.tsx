@@ -60,8 +60,7 @@ export const addUserToRoom = async (user:string, roomName:string) => {
     try{
         let {key:userKey, rooms:userRooms} = await findUserByEmail(user);
         let {key:roomKey, users:roomUsers} = await findRoomByName(roomName);
-        //console.log('oi')
-        //console.log('user da sala: '+ roomUsers.find(user), "salas dopuser"+userRooms.find(roomName))
+        
         if(roomUsers && userRooms) {
             if(roomUsers.find( (element:any) => element === user) || userRooms.find((element:any) => element === roomName))
                 return null;
@@ -105,18 +104,19 @@ export const removeUserFromRoom = async(user:any, roomName:string) =>{
 
 }
 
-
-
-export const createRoom = async(name:string, user:any) =>{
+export const createRoom = async(name:string, user:any, password:any = null) =>{
     const exists = await findRoomByName(name);
 
     if(!exists){
-        await database.ref('/rooms').push({name});
+        await database.ref('/rooms').push({name, password});
         await addUserToRoom(user.email, name);
         return true;
     } else {
-        await addUserToRoom(user.email, name);
-        return false;
+        if(!exists.password || exists.password == password){
+            await addUserToRoom(user.email, name);
+            return true;
+        } 
+        else return false;
     }
 }
 

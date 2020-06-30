@@ -47,41 +47,7 @@ const Rooms: React.FC = () => {
               Suas salas
             </div>
             <IonButtons slot="end">
-            <IonAlert
-              isOpen={showAlert1}
-              onDidDismiss={() => setShowAlert1(false)}
-              header={'Criar ou entrar em sala'}
-              inputs={[
-                {
-                  name: 'roomName',
-                  type: 'text',
-                  placeholder: 'Nome da sala'
-                }
-              ]}
-              
-              buttons={[
-                {
-                  text: 'Cancel',
-                  role: 'cancel',
-                  cssClass: 'secondary',
-                  handler: () => {}
-                },
-                {
-                  text: 'Ok',
-                  handler: async (data) => {
-                    const nomeFinal = data.roomName?.toLowerCase();
-                    if(ROOM_NAME_REGEX.test(nomeFinal)){
-                      await createRoom(nomeFinal, user);
-                      presentToast('Entrou na sala com sucesso.');
-                    } else {
-                      presentToast('O nome da sala deve conter somente letras e números, sem acentos ou espaços.');
-                    }
-                  }
-                }
-              ]}
-            />
-              <IonButton onClick={()=>setShowCreateRoom(!showCreateRoom)}><IonIcon icon={addOutline}></IonIcon> </IonButton>
-              
+              <IonButton onClick={()=>setShowCreateRoom(!showCreateRoom)}><IonIcon icon={addOutline}></IonIcon> </IonButton> 
             </IonButtons>
           </IonToolbar>
         </IonHeader>
