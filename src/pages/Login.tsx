@@ -46,7 +46,9 @@ const Login: React.FC = () => {
         <div id="login-container">
             
             <img id="logo-login" width="200px" height="70px" src={Logo} alt=""/>
-            <span id="descricao-login">Converse o que quiser, quando quiser. 💬 </span>
+            <span id="descricao-login">Converse sobre o que quiser! </span>
+            <span id="descricao-login">Crie uma sala e encontre pessoas com os mesmos interesses 💬</span>
+            
 
             <div id="login-campos-container">
                 <IonItem color="light" className="input-login">

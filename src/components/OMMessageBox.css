@@ -4,6 +4,7 @@
     flex-flow: column;
     justify-content: space-around;
     height: 50%;
+    min-height: 300px;
     width: 90%;
     background-color: white;
     margin-top: 25%;
