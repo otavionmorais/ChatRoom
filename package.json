@@ -20,7 +20,7 @@
     "capacitor-fcm": "^2.0.0",
     "firebase": "^7.14.2",
     "ionicons": "^5.0.0",
-    "moment": "^2.25.3",
+    "moment": "^2.29.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-longpressable": "^1.1.1",
